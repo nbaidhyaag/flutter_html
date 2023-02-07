@@ -38,11 +38,13 @@ dependencies:
 
   # Plugins for rendering the <svg> tag.
 #  flutter_svg: '>=0.22.0 <1.0.0'
-  flutter_svg: ^1.1.6
+  flutter_svg: ^2.0.0+1
 
   # Plugin for rendering MathML
 #  flutter_math_fork: '>=0.3.3+1 <1.0.0'
-  flutter_math_fork: ^0.6.3+1
+  flutter_math_fork:
+    git:
+      url: https://github.com/nbaidhyaag/flutter_math_fork
 
   # plugin for firstWhereOrNull extension on lists
 #  collection: '>=1.15.0 <2.0.0'
