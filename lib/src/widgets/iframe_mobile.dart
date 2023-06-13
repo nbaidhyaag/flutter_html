@@ -28,19 +28,61 @@ class IframeContentElement extends ReplacedElement {
   Widget toWidget(RenderContext context) {
     final sandboxMode = attributes["sandbox"];
     return Container(
-      width: width ?? (height ?? 150) * 2,
-      height: height ?? (width ?? 300) / 2,
-      child: WebView(
-        initialUrl: src,
-        key: key,
-        javascriptMode: sandboxMode == null || sandboxMode == "allow-scripts"
-            ? JavascriptMode.unrestricted
-            : JavascriptMode.disabled,
-        navigationDelegate: navigationDelegate,
-        gestureRecognizers: {
-          Factory<VerticalDragGestureRecognizer>(() => VerticalDragGestureRecognizer())
-        },
-      ),
+        width: width ?? (height ?? 150) * 2,
+        height: height ?? (width ?? 300) / 2,
+        child: CustomWebViewWidget(
+          navigationDelegate: navigationDelegate,
+          sandboxMode: sandboxMode,
+          url: src,
+        )
+        // WebView(
+        //   initialUrl: src,
+        //   key: key,
+        //   // javascriptMode: sandboxMode == null || sandboxMode == "allow-scripts"
+        //   //     ? JavascriptMode.unrestricted
+        //   //     : JavascriptMode.disabled,
+        //   // navigationDelegate: navigationDelegate,
+        //   gestureRecognizers: {
+        //     Factory<VerticalDragGestureRecognizer>(() => VerticalDragGestureRecognizer())
+        //   },
+        // ),
+        );
+  }
+}
+
+class CustomWebViewWidget extends StatefulWidget {
+  const CustomWebViewWidget(
+      {super.key, this.sandboxMode, this.navigationDelegate, this.url});
+  final String? sandboxMode;
+  final NavigationDelegate? navigationDelegate;
+  final String? url;
+
+  @override
+  State<CustomWebViewWidget> createState() => _CustomWebViewWidgetState();
+}
+
+class _CustomWebViewWidgetState extends State<CustomWebViewWidget> {
+  WebViewController webcontroller = WebViewController();
+  @override
+  void initState() {
+    webcontroller
+      ..setJavaScriptMode(
+          widget.sandboxMode == null || widget.sandboxMode == "allow-scripts"
+              ? JavaScriptMode.unrestricted
+              : JavaScriptMode.disabled)
+      ..setNavigationDelegate(widget.navigationDelegate ?? NavigationDelegate())
+      ..loadRequest(Uri.parse(widget.url ?? ''));
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WebViewWidget(
+      controller: webcontroller,
+      gestureRecognizers: {
+        Factory<VerticalDragGestureRecognizer>(
+            () => VerticalDragGestureRecognizer())
+      },
     );
   }
 }
