@@ -25,7 +25,9 @@ dependencies:
   #  chewie: '>=1.0.0 <2.0.0'
 
   video_player: ^2.6.1
-  chewie: ^1.7.4
+  chewie:
+    git:
+      url: https://github.com/sasen98/chewie
 
   # Plugin for rendering the <iframe> tag.
   #  webview_flutter: '>=2.0.4 <3.0.0'
